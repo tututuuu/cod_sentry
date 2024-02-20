@@ -49,14 +49,32 @@ CAN_TxFrameTypeDef gimbal_TxFrame = {
 		.header.DLC = 8,
 };
 
+//CAN_TxFrameTypeDef shoot_TxFrame3 = {
+//    .hcan = &hcan1,
+//	  .header.StdId = 0x200,
+//		.header.IDE = CAN_ID_STD,
+//		.header.RTR = CAN_RTR_DATA,
+//		.header.DLC = 8,
+//};
+//	
 CAN_TxFrameTypeDef shoot_TxFrame1 = {
-    .hcan = &hcan1,
-	  .header.StdId = 0x200,
+    .hcan = &hcan2,
+	  .header.StdId = 0x1FF,
 		.header.IDE = CAN_ID_STD,
 		.header.RTR = CAN_RTR_DATA,
 		.header.DLC = 8,
 };
 	
+
+CAN_TxFrameTypeDef shoot_TxFrame2 = 
+{
+	  .hcan = &hcan2,
+	  .header.StdId = 0x200,
+		.header.IDE = CAN_ID_STD,
+		.header.RTR = CAN_RTR_DATA,
+		.header.DLC = 8,
+};
+
 
 
 /**
@@ -142,13 +160,17 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
   {
 		get_Motor_Data(&USER_CAN_RxInstance.header.StdId,USER_CAN_RxInstance.data,&Gimbal[Yaw]);
 		get_Motor_Data(&USER_CAN_RxInstance.header.StdId,USER_CAN_RxInstance.data,&Gimbal[Pitch]);
-		get_Motor_Data(&USER_CAN_RxInstance.header.StdId,USER_CAN_RxInstance.data,&Shoot[l_Frict1]);
-		get_Motor_Data(&USER_CAN_RxInstance.header.StdId,USER_CAN_RxInstance.data,&Shoot[r_Frict1]);
-		get_Motor_Data(&USER_CAN_RxInstance.header.StdId,USER_CAN_RxInstance.data,&Shoot[l_Trigger]);
+
+//		get_Motor_Data(&USER_CAN_RxInstance.header.StdId,USER_CAN_RxInstance.data,&Shoot[down_Trigger]);
 
   }
   else if(hcan->Instance == CAN2)
   {
+		get_Motor_Data(&USER_CAN_RxInstance.header.StdId,USER_CAN_RxInstance.data,&Shoot[l_Frict1]);
+		get_Motor_Data(&USER_CAN_RxInstance.header.StdId,USER_CAN_RxInstance.data,&Shoot[r_Frict1]);
+		get_Motor_Data(&USER_CAN_RxInstance.header.StdId,USER_CAN_RxInstance.data,&Shoot[l_Frict2]);
+		get_Motor_Data(&USER_CAN_RxInstance.header.StdId,USER_CAN_RxInstance.data,&Shoot[r_Frict2]);
+		get_Motor_Data(&USER_CAN_RxInstance.header.StdId,USER_CAN_RxInstance.data,&Shoot[l_Trigger]);
 
   }
 }

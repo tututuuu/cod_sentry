@@ -9,7 +9,7 @@ typedef struct
 
 		float l_trigger_v;
 	}Target;
-	int sendvalue[3];
+	int sendvalue[5];
 	
 }Shoot_info_t;
 

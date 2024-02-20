@@ -47,7 +47,7 @@ typedef struct
 
 /* Exported functions prototypes ---------------------------------------------*/
 
-extern CAN_TxFrameTypeDef gimbal_TxFrame,INTER_ACT,shoot_TxFrame1,VIS_ACT;
+extern CAN_TxFrameTypeDef gimbal_TxFrame,INTER_ACT,shoot_TxFrame1,VIS_ACT,shoot_TxFrame2,shoot_TxFrame3;
 /**
   * @brief  Configures the CAN Filter.
   */

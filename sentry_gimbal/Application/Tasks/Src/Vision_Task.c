@@ -35,7 +35,7 @@ SolveTrajectory_Typedef SolveTrajectory={
  */
 Vision_Info_Typedef Vision_Info;
 
-static void Chassis_Vis(void);
+//static void Chassis_Vis(void);
 /* USER CODE BEGIN Header_Vision_Task */
 /**
 * @brief Function implementing the StartVisionTask thread.
@@ -57,9 +57,9 @@ void Vision_Task(void const * argument)
     Vision_Info.IF_Aiming_Enable = (MiniPC_ReceivePacket.tracking == true);
 
     /* update the transmit euler angle in radians */
-    MiniPC_SendPacket.pitch = INS_Info.angle[IMU_ANGLE_INDEX_PITCH];
-    MiniPC_SendPacket.yaw   = INS_Info.angle[IMU_ANGLE_INDEX_YAW];
-    MiniPC_SendPacket.roll  = INS_Info.angle[IMU_ANGLE_INDEX_ROLL];
+    MiniPC_SendPacket.pitch = INS_Info.angle[2];
+    MiniPC_SendPacket.yaw   = INS_Info.angle[0];
+    MiniPC_SendPacket.roll  = -INS_Info.angle[1];
 
     /* update the solve trajectory */
 		SolveTrajectory_Update(&SolveTrajectory,-MiniPC_SendPacket.pitch,MiniPC_SendPacket.yaw,30.f);

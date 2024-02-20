@@ -22,6 +22,13 @@ typedef struct
 	float y;
 }POINT_T;
 
+enum
+{
+	pos1,
+	pos2,
+	pos_num,
+};
+
 typedef struct
 {
 	POINT_T point;
@@ -52,6 +59,6 @@ extern Chassis_Info_t point,wheel,Remote,visdata;
 extern void get_Gimbal_DATE1(uint32_t *canId,uint8_t *rxBuf,Chassis_Info_t*remote);
 extern void get_Gimbal_DATE2(uint32_t *canId,uint8_t *rxBuf,Chassis_Info_t*visdata);
 extern float Calangle(float angle1,float angle2);
-extern float CalLineangle(ACTline_t*Start,ACTline_t*End);
+extern float CcltLineAngle(ACTline_t *pointStart, ACTline_t *pointEnd);
 
 #endif

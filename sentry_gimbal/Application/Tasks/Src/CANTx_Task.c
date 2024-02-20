@@ -18,9 +18,9 @@ void CANTx_Task(void const * argument)
 			Gimbal_Info.Target.yaw_angle = INS_Info.yaw_tolangle;
 			Gimbal_Info.Target.pitch_angle = INS_Info.rol_angle;
 			Shoot_info.Target.frict1_v = 0;
+			Shoot_info.Target.l_trigger_v = 0;
 //			Shoot_info.sendvalue[0] = 0;
 //			Shoot_info.sendvalue[1] = 0;
-			Shoot_info.sendvalue[2] = 0;
 			Gimbal_Info.sendvalue[0] = 0;
 			Gimbal_Info.sendvalue[1] = 0;
 
@@ -32,14 +32,20 @@ void CANTx_Task(void const * argument)
 		gimbal_TxFrame.data[3] = (uint8_t)(Gimbal_Info.sendvalue[1]);
 		USER_CAN_TxMessage(&gimbal_TxFrame);
 
-		shoot_TxFrame1.data[0] = (uint8_t)(Shoot_info.sendvalue[0] >> 8);
-		shoot_TxFrame1.data[1] = (uint8_t)(Shoot_info.sendvalue[0]);
-		shoot_TxFrame1.data[2] = (uint8_t)(Shoot_info.sendvalue[1] >> 8);
-		shoot_TxFrame1.data[3] = (uint8_t)(Shoot_info.sendvalue[1]);
-		shoot_TxFrame1.data[4] = (uint8_t)(Shoot_info.sendvalue[2] >> 8);
-		shoot_TxFrame1.data[5] = (uint8_t)(Shoot_info.sendvalue[2]);
-		USER_CAN_TxMessage(&shoot_TxFrame1);
+		shoot_TxFrame2.data[0] = (uint8_t)(Shoot_info.sendvalue[0] >> 8);
+		shoot_TxFrame2.data[1] = (uint8_t)(Shoot_info.sendvalue[0]);
+		shoot_TxFrame2.data[2] = (uint8_t)(Shoot_info.sendvalue[1] >> 8);
+		shoot_TxFrame2.data[3] = (uint8_t)(Shoot_info.sendvalue[1]);
+//		shoot_TxFrame2.data[4] = (uint8_t)(Shoot_info.sendvalue[2] >> 8);
+//		shoot_TxFrame2.data[5] = (uint8_t)(Shoot_info.sendvalue[2]);
+//		shoot_TxFrame2.data[6] = (uint8_t)(Shoot_info.sendvalue[3] >> 8);
+//		shoot_TxFrame2.data[7] = (uint8_t)(Shoot_info.sendvalue[3]);
+		USER_CAN_TxMessage(&shoot_TxFrame2);
 		
+		shoot_TxFrame1.data[4] = (uint8_t)(Shoot_info.sendvalue[4] >> 8);
+		shoot_TxFrame1.data[5] = (uint8_t)(Shoot_info.sendvalue[4]);
+		USER_CAN_TxMessage(&shoot_TxFrame1);
+//		
 		osDelay(1);
 	}
 

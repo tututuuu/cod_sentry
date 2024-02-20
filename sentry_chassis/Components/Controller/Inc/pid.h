@@ -32,7 +32,7 @@
                                     else if ((x) < (min)) {(x) = (min);} \
                                 }while(0U)
 
-#define ABS(x) ((x>0) ? x : (-x))
+#define ABS(x) (((x)>0) ? (x) : -(x))
 /**
  * @brief macro definition of the number of pid parameters
 */

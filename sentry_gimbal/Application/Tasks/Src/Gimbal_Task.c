@@ -13,13 +13,13 @@ float Gimbal_pid[2][2][6] =
 {
 	[0] = 
 	{
-		[0] = {80,0,0,0,0,7000},       //yaw_angle  90    80
-		[1] = {65,0.01,0,0,10000,30000},    //yaw_v  70   65
+		[0] = {110,0,0,0,0,7000},       //yaw_angle  90    80     60
+		[1] = {75,0.01,0,0,10000,30000},    //yaw_v  70   65    110
 	},
 	[1] = 
 	{
-		[0] = {100,0,0,0,0,5000},         //pitch_angle   100   130
-		[1] = {80,0,0,0,12000,24000}      //pitch_v     -80   -100
+		[0] = {100,0,0,0,0,5000},         //pitch_angle   100   130   100
+		[1] = {80,0,0,0,12000,24000}      //pitch_v     -80   -100    80
 	},
 };
 int vision_flag = 0;
@@ -51,35 +51,82 @@ static void Gimbal_Init(void)
 	PID_Init(&GIMBAL_PID[1][1],PID_POSITION,Gimbal_pid[1][1]);
 }
 
+float target_yaw_angle;
+float target_pitch_angle;
 static void Gimbal_Mode()
 {
-  if(remote_ctrl.rc.s[1] == 3 || remote_ctrl.rc.s[1] == 1)
-//	if(remote_ctrl.rc.s[1] == 3)
+//  if(remote_ctrl.rc.s[1] == 3 || remote_ctrl.rc.s[1] == 1)
+	if(remote_ctrl.rc.s[1] == 3 || ((remote_ctrl.rc.s[1]==2) && (remote_ctrl.rc.s[0]==3)))
 	{
-		
+
 		Gimbal_Info.Target.yaw_angle -= 0.0002*remote_ctrl.rc.ch[0];
 		Gimbal_Info.Target.pitch_angle -= 0.0002*remote_ctrl.rc.ch[1]; 
-	  VAL_LIMIT(Gimbal_Info.Target.pitch_angle,-15,6);
+	 // VAL_LIMIT(Gimbal_Info.Target.pitch_angle,0,17);
 		angle_err[0] = Gimbal_Info.Target.yaw_angle - INS_Info.yaw_tolangle;
-		angle_err[1] = Gimbal_Info.Target.pitch_angle-INS_Info.rol_angle;
+		angle_err[1] = Gimbal_Info.Target.pitch_angle - INS_Info.rol_angle;
 	}
 	
-//	if(remote_ctrl.rc.s[1] == 1 && remote_ctrl.rc.s[0] == 3)
-//	{
-//		vision_flag = 1;
-//		if((vision_flag == 1) && (Vision_Info.IF_Aiming_Enable))
-//		{
-//		//	VAL_LIMIT(Vision_Info.target_Pitch,-15,6);
-//			angle_err[0] = Vision_Info.target_Yaw - INS_Info.yaw_tolangle;
-//			angle_err[1] = Vision_Info.target_Pitch - INS_Info.rol_angle;
+	if((remote_ctrl.rc.s[1] == 1 && remote_ctrl.rc.s[0] == 3) || (remote_ctrl.rc.s[1] == 1 && remote_ctrl.rc.s[0] == 2))
+	{
+		vision_flag = 1;
+	}
+	else
+	{
+		vision_flag = 0;	
+	}
+	
+		if((vision_flag == 1) && (Vision_Info.IF_Aiming_Enable))
+		{
+
+			VAL_LIMIT(Vision_Info.target_Pitch,-15,6);
+      if(ABS(Vision_Info.target_Pitch)>40)
+			{
+				Vision_Info.target_Pitch = 0;
+			}
+			
+			
+//			target_yaw_angle += 0.0001 * Vision_Info.target_Yaw;
+//			target_pitch_angle -= 0.0001 * Vision_Info.target_Pitch;
+//           target_yaw_angle = Vision_Info.target_Yaw + 5;
+			angle_err[0] = Vision_Info.target_Yaw - INS_Info.yaw_tolangle;
+			angle_err[1] = -Vision_Info.target_Pitch - INS_Info.rol_angle;
+			
+
+//			if(Vision_Info.target_Yaw < 0.07)
+//			{
+//         angle_err[0] = 0;
+//			}
+//			if(Vision_Info.target_Pitch < 0.07)
+//			{
+//					angle_err[1] = 0;
+//			}
+			
+//			angle_err[0] = target_yaw_angle - INS_Info.yaw_tolangle;
+//			angle_err[1] = target_pitch_angle - INS_Info.rol_angle;
+//		
+
+				if(angle_err[0] >180) angle_err[0] =  angle_err[0]-360;
+				else if(angle_err[0] < -180) angle_err[0] = 360 + angle_err[0];
+		
+				if(ABS(angle_err[0])>90.f)angle_err[0]=0;
 //			if(ABS(angle_err[0])>180) angle_err[0] = angle_err[0]-angle_err[0]/ABS(angle_err[0])*360;
+//		  if(ABS(angle_err[0])>90.f)angle_err[0]=0;
+		
+			Gimbal_Info.Target.yaw_angle = INS_Info.yaw_tolangle;
+			Gimbal_Info.Target.pitch_angle = INS_Info.rol_angle;
+		}
+//		else
+//		{
+//			angle_err[0] = 0;
+//			angle_err[1] = 0;
 //		}
-//	}
-//	
-//	if(remote_ctrl.rc.s[1] == 1 && remote_ctrl.rc.s[0] == 1)
-//	{
-//	
-//	}
+//		
+	
+	
+	if(remote_ctrl.rc.s[1] == 1 && remote_ctrl.rc.s[0] == 1)
+	{
+	
+	}
 		
 }
 

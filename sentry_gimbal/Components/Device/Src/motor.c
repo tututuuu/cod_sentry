@@ -51,10 +51,22 @@ DJI_Motor_Info_Typedef Shoot[Gimbal_num] =
 	  .Data.StdId = 0x202,
 		.Type = DJI_M3508,
 	},
+//	[l_Frict2] = {
+//	  .Data.StdId = 0x203,
+//		.Type = DJI_M3508,
+//	},
+//	[r_Frict2] = {
+//	  .Data.StdId = 0x204,
+//		.Type = DJI_M3508,
+//	},
 	[l_Trigger] = {
-	  .Data.StdId = 0x203,
+	  .Data.StdId = 0x207,
 		.Type = DJI_M2006,
 	},
+//	[down_Trigger] = {
+//	  .Data.StdId = 0x201,
+//		.Type = DJI_M2006,
+//	},
 
 };
 
